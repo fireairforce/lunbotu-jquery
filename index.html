@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>轮播图</title>
+    <style type="text/css">
+     *{margin: 0;padding: 0;}
+     .play{width: 1226px;height: 700px;background-color: red;margin: 0 auto;position: relative;overflow:hidden;}
+     /* .play .pic{width: 1226px;height: 660px;}  */
+  /* 表示超出部分隐藏 */
+     .play .list ul{width: 200px;height: 30px;position: absolute;bottom:20px;right: 0;}
+     .play .list ul li{float: left;width: 20px;height: 20px;border: 2px solid #fff;border-radius: 10px;list-style: none;line-height: 20px;text-align: center;margin-left:5px;}   
+     .left{position: absolute;top:45%;left: 0;}
+     .left:hover{background-color: blue}
+     .right{position: absolute;top: 45%;right: 0;}
+     .right:hover{background-color: blue}
+     .active{background-color: #fff;}
+     .qaq{margin: 0 auto}
+     .qaq p{text-align: center;}
+    </style>
+</head>
+<body>
+    <div class="play">
+      <!-- 图片 -->
+       <div class="pic">
+      <img src="images/1.jpg" width="1226px" height="700px">
+      <img src="images/2.jpg" width="1226px" height="700px">
+      <img src="images/3.jpg" width="1226px" height="700px">
+      <img src="images/4.jpg" width="1226px" height="700px">
+      <img src="images/5-1.jpg" width="1226px" height="700px">
+       </div>
+      <!-- 列表小圆点 -->
+      <div class="list">
+          <ul>
+              <li class="active"></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+          </ul>
+      </div>
+      <div class="jiantou">
+          <img src="images/left.png" class="left">
+          <img src="images/right.png" class="right">
+      </div>
+</div>
+<div class="qaq">
+<p>by zoomdong</p>
+<p>QQ:1344492820</p>
+</div>
+  <script type="text/javascript" src="js/jquery.min.js">
+    //  js的一个格式代码
+    //  $('XXXXXX').函数(function(){内容});
+    //        谁         干什么          具体干什么
+    //  $("XXXXXX").函数(function(){
+    //     内容
+    //  });
+  </script>
+  <script type="text/javascript">
+  var time=0;
+  timeplay=null;
+  //表示鼠标放在li上面
+    $(".play .list ul li").mouseover(function(){
+        clearInterval(timeplay);//清楚计时器（没有这个地方就会出现一个自动轮播与鼠标的相冲突bug).
+       index=$(this).index();//获取序列号
+    //    alert(index);    //显示提示//具体干什么
+        $(this).addClass("active").siblings().removeClass("active");    //this指的是第一个(".play .list ul li")这些东西，意思就是鼠标放上去之后给这个增加一个样式。
+    //siblings()函数表示增加一个白色的时候，剩余的其他执行后面的removeClass("active")移开白色这个函数。
+        $(".play .pic img").eq(index).show().siblings(".play .pic img").hide();
+    }).mouseout(function(){
+        aa();
+    });//mouseout表示鼠标离开之后依旧可以自动轮播。
+
+// 自定义函数 自己写方法 function
+// 格式:
+//    function 名字(){内容}
+// 设置时钟函数
+// setInterval(function(){内容},1000)
+
+// aa();
+//      function aa(){
+//          alert("emmm");
+//      }
+    aa();
+    function aa(){
+        // var time=0;
+        timeplay=setInterval(function(){
+        time++;
+        // alert(time);
+        if(time<5){
+            $(".play ul li").eq(time).addClass("active").siblings().removeClass("active");//实现小白点的自动切换
+            $(".play .pic img").eq(time).show().siblings("img").hide();    //实现图片的自动切换。
+        }else{
+            time=-1;//这里就可以相当于实现了一个循环，这里变成-1之后后面就会++一次变成0.
+        }
+        
+        },1000);
+    }
+
+    //左切换
+    $(".play .jiantou .left").click(function(){
+        time--;
+        if(time>=0){
+            $(".play .list ul li").eq(time).addClass("active").siblings().removeClass("active");
+            $(".play .pic img").eq(time).show().siblings(".play .pic img").hide();
+        }else{
+            time=5;
+            $(".play .list ul li").eq(time=4).addClass("active").siblings().removeClass("active");
+            $(".play .pic img").eq(time=4).show().siblings(".play .pic img").hide();
+        }
+    });
+    //鼠标放在箭头上面 停止自动轮播
+    $(".play .jiantou .left").mouseover(function(){
+       clearInterval(timeplay);
+    }).mouseout(function(){
+        aa();
+    });
+
+       //右切换
+       $(".play .jiantou .right").click(function(){
+        time++;
+        if(time<=4){
+            $(".play .list ul li").eq(time).addClass("active").siblings().removeClass("active");
+            $(".play .pic img").eq(time).show().siblings(".play .pic img").hide();
+        }else{
+            time=-1;
+            $(".play .list ul li").eq(time=0).addClass("active").siblings().removeClass("active");
+            $(".play .pic img").eq(time=0).show().siblings(".play .pic img").hide();
+        }
+    });
+    //当鼠标放在右箭头上面停止自动播放。
+    $(".play .jiantou .right").mouseover(function(){
+       clearInterval(timeplay);
+    }).mouseout(function(){
+        aa();
+    });
+  </script>
+</body>
+</html>
